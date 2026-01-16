@@ -1,3 +1,6 @@
 [submodule "_backends/uploader"]
 	path = _backends/uploader
 	url = https://github.com/erwanriou/test_swe_uploader.git
+[submodule "_libraries/common"]
+	path = _libraries/common
+	url = https://github.com/erwanriou/test_swe_common.git
