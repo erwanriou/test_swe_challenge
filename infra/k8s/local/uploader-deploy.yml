@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uploader-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uploader
+  template:
+    metadata:
+      labels:
+        app: uploader
+    spec:
+      containers:
+        - name: uploader
+          image: docker.pkg.github.com/archsplace/archsplace_uploader/uploader
+          env:
+            - name: MONGO_URI
+              value: "mongodb://uploader-mongo-srv:27017/uploader"
+            - name: NATS_URL
+              value: "nats://nats-srv:4222"
+            - name: NODE_ENVIRONEMENT
+              value: development
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            # GOOGLE SECRETS
+            - name: GOOGLE_PROJECT_ID
+              value: swe-challenge
+            - name: GOOGLE_STORAGE_BUCKET
+              value: swe-challenge-data
+            - name: GOOGLE_STORAGE_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: google-storage-email
+                  key: GOOGLE_STORAGE_EMAIL
+            - name: GOOGLE_STORAGE_SSH
+              valueFrom:
+                secretKeyRef:
+                  name: google-storage-ssh
+                  key: GOOGLE_STORAGE_SSH
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: uploader-srv
+spec:
+  selector:
+    app: uploader
+  ports:
+    - name: uploader
+      port: 3000
+      targetPort: 3000

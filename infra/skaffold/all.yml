@@ -1,0 +1,35 @@
+apiVersion: skaffold/v2beta8
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/local/*.yml
+
+build:
+  local:
+    push: false
+  artifacts:
+    - image: uploader
+      context: _backends/uploader
+      docker:
+        dockerfile: infra/Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: .
+    - image: scheduler
+      context: _backends/scheduler
+      docker:
+        dockerfile: infra/Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: .
+    - image: notifier
+      context: _backends/notifier
+      docker:
+        dockerfile: infra/Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: .
