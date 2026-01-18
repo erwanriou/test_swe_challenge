@@ -13,8 +13,9 @@ spec:
         app: ui
     spec:
       containers:
-        image: ui
-        imagePullPolicy: IfNotPresent
+        - name: ui
+          image: ui
+          imagePullPolicy: IfNotPresent
 ---
 apiVersion: v1
 kind: Service
