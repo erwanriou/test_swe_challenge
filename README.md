@@ -42,17 +42,14 @@ curl -LO https://storage.googleapis.com/minikube/releases/v1.31.2/minikube-linux
 sudo install minikube-linux-amd64 /usr/local/bin/minikube
 ```
 - Install skaffold (used for dev environment): https://skaffold.dev/docs/install/
-- Install Gcloud SDK (including gutil): https://cloud.google.com/sdk/docs/install (OPTIONAL)
+
 
 ## Installation
 
 - Auth with your cloud environment using the Gcloud command:
 
   ```sh
-  # THE GCLOUD LOGIN IS OPTIONAL
-  gcloud auth login
-  gcloud components install gke-gcloud-auth-plugin
-  # Then launch minikube
+  # launch minikube
   minikube start --kubernetes-version=v1.27.3 --memory 8192 --cpus 4
   ```
 
