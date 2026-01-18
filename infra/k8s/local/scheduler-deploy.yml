@@ -29,7 +29,7 @@ spec:
                   fieldPath: metadata.name
             # GOOGLE SECRETS
             - name: GOOGLE_PROJECT_ID
-              value: swe-challenge
+              value: swe-challenge-484714
             - name: GOOGLE_STORAGE_BUCKET
               value: swe-challenge-data
             - name: GOOGLE_STORAGE_EMAIL
