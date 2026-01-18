@@ -14,7 +14,7 @@
   nvm install 20.9.0
   nvm alias default 20.9.0
   ```
-- For git if first time use the following script below just before clone archsplace repository.
+- For git if first time use the following script below just before clone the repository.
   ```sh
   git config --global user.email ***@***.com
   git config --global user.name ***some_name
