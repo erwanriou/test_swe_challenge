@@ -22,7 +22,7 @@
   git config --global core.ignorecase false
   ```
 - Linux or Mac (with minikube only)
-- Zed installed `curl -f https://zed.dev/install.sh | sh` # Or other IDE that you prefer
+- Zed installed `curl -f https://zed.dev/install.sh | sh` or other IDE that you are used to (vscode, claude...)
 - Last Chrome/Firefox Version
 
 ## Pre-installation
