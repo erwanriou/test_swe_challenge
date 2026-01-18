@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "bash scripts/initiate.sh",
-    "commit": "bash scripts/commit.sh"
+    "commit": "bash scripts/commit.sh",
+    "update": "bash scripts/update.sh"
   },
   "author": "",
   "license": "ISC"
