@@ -7,3 +7,6 @@
 [submodule "_backends/scheduler"]
 	path = _backends/scheduler
 	url = https://github.com/erwanriou/test_swe_scheduler.git
+[submodule "_backends/notifier"]
+	path = _backends/notifier
+	url = https://github.com/erwanriou/test_swe_notifier.git
