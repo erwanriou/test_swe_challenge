@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: uploader
-          image: docker.pkg.github.com/archsplace/archsplace_uploader/uploader
+          image: uploader
+          imagePullPolicy: IfNotPresent
           env:
             - name: MONGO_URI
               value: "mongodb://uploader-mongo-srv:27017/uploader"
@@ -34,12 +35,12 @@ spec:
             - name: GOOGLE_STORAGE_EMAIL
               valueFrom:
                 secretKeyRef:
-                  name: google-storage-email
+                  name: swe-challenge-email
                   key: GOOGLE_STORAGE_EMAIL
             - name: GOOGLE_STORAGE_SSH
               valueFrom:
                 secretKeyRef:
-                  name: google-storage-ssh
+                  name: swe-challenge-ssh
                   key: GOOGLE_STORAGE_SSH
 
 ---

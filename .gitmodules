@@ -4,3 +4,6 @@
 [submodule "_libraries/common"]
 	path = _libraries/common
 	url = https://github.com/erwanriou/test_swe_common.git
+[submodule "_backends/scheduler"]
+	path = _backends/scheduler
+	url = https://github.com/erwanriou/test_swe_scheduler.git

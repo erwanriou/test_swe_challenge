@@ -1,0 +1,58 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-tcp-srv
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/permanent-redirect-code: "301"
+    nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    # SOCKET CONFIGURATIONS
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
+    # ERROR BACKEND
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location @custom_503 {
+        return 503 " <html> <head> <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'> <style> body { position: relative; background-color: black; font-family: sans-serif; font-size: 12px; font-weight: 100; color: white; } .container { position: relative; display: -webkit-flex; display: -ms-flex; display: flex; justify-content: center; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -ms-align-items: center; align-items: center; margin: 0 auto; width: 100%; height: calc(100vh - 7rem); } h1, h2, p { text-align: center; font-weight: 100; padding: 0 1rem; } </style> </head> <body> <div class='container'> <h1>Currently offline for maintenance</h1> <h2>Please try again in 10 minutes.</h2> </div> </body> </html>";
+      }
+      location @custom_403 {
+        return 403 " <html> <head> <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'> <style> body { position: relative; background-color: black; font-family: sans-serif; font-size: 12px; font-weight: 100; color: white; } .container { position: relative; display: -webkit-flex; display: -ms-flex; display: flex; justify-content: center; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -ms-align-items: center; align-items: center; margin: 0 auto; width: 100%; height: calc(100vh - 7rem); } h1, h2, p { text-align: center; font-weight: 100; padding: 0 1rem; } </style> </head> <body> <div class='container'> <h1>This page is not accessible</h1> <p>Check your administrator.</p> </div> </body> </html>";
+      }
+      error_page 503 @custom_503;
+      error_page 403 @custom_403;
+      error_page 401 @custom_403;
+spec:
+  rules:
+    # NEXTJS APPS
+    - host: www.swe-challenge.dev
+      http:
+        paths:
+          - path: /api/uploader/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: uploader-srv
+                port:
+                  number: 3000
+          - path: /api/notifier/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: notifier-srv
+                port:
+                  number: 3000
+          - path: /api/notifier/?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: notifier-srv
+                port:
+                  number: 3000
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: ui-srv
+                port:
+                  number: 3000

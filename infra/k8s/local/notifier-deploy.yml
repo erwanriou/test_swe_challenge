@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notifier-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notifier
+  template:
+    metadata:
+      labels:
+        app: notifier
+    spec:
+      containers:
+        - name: notifier
+          image: notifier
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MONGO_URI
+              value: "mongodb://notifier-mongo-srv:27017/notifier"
+            - name: NATS_URL
+              value: "nats://nats-srv:4222"
+            - name: NODE_ENVIRONEMENT
+              value: development
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            # GOOGLE SECRETS
+            - name: GOOGLE_PROJECT_ID
+              value: swe-challenge
+            - name: GOOGLE_STORAGE_BUCKET
+              value: swe-challenge-data
+            - name: GOOGLE_STORAGE_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: swe-challenge-email
+                  key: GOOGLE_STORAGE_EMAIL
+            - name: GOOGLE_STORAGE_SSH
+              valueFrom:
+                secretKeyRef:
+                  name: swe-challenge-ssh
+                  key: GOOGLE_STORAGE_SSH
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notifier-srv
+spec:
+  selector:
+    app: notifier
+  ports:
+    - name: notifier
+      port: 3000
+      targetPort: 3000
