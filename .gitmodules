@@ -10,3 +10,6 @@
 [submodule "_backends/notifier"]
 	path = _backends/notifier
 	url = https://github.com/erwanriou/test_swe_notifier.git
+[submodule "_frontends/ui"]
+	path = _frontends/ui
+	url = https://github.com/erwanriou/test_swe_ui.git
