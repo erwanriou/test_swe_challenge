@@ -46,13 +46,11 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
 ## Installation
 
-- Auth with your cloud environment using the Gcloud command:
-
+- Launch minikube a first time (RECOMMANDED STEP)
   ```sh
   # launch minikube
   minikube start --kubernetes-version=v1.27.3 --memory 8192 --cpus 4
   ```
-
 - Make sure to upload **⚠️ ALL THE SECRETS ⚠️** needed and apply them to your kubernetes cluster (Sent by email together)
 - Start the project with:
   ```sh
