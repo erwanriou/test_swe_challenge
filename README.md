@@ -98,21 +98,3 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube
                     +-----+------+
                     |   Client   |
                     +------------+
-
-                     (Event-driven async)
-                  +--------------------------------+
-                  |        NATS JetStream          |
-                  |        Stream: EVENTS          |
-                  +--------+---------------+-------+
-                           |               |
-                           v               v
-                 +---------+----+   +------+---------+
-                 | Scheduler    |   | Notifier       |
-                 | Consumers    |   | Consumers      |
-                 +--------------+   +------+---------+
-                                           |
-                                           v
-                                     +-----+------+
-                                     | MongoDB    |
-                                     | notifier   |
-                                     +------------+
