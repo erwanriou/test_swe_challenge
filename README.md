@@ -68,8 +68,6 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
 [ARCHITECTURE DOCUMENT](https://github.com/erwanriou/test_swe_challenge/wiki/Document-Processing-Pipeline-%E2%80%94-Architecture-Document)
 
----
-
 **APPLICATION**
 ```md
 Browser (folder upload)
