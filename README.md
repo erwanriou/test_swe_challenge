@@ -66,4 +66,4 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube
 
 ## Architecture
 
-TODO WORK IN PROGRESS
+[ARCHITECTURE DOCUMENT](https://github.com/erwanriou/test_swe_scheduler/wiki/Document-Processing-Pipeline-%E2%80%94-Architecture-Document)
