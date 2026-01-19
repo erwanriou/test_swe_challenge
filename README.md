@@ -67,3 +67,60 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube
 ## Architecture
 
 [ARCHITECTURE DOCUMENT](https://github.com/erwanriou/test_swe_challenge/wiki/Document-Processing-Pipeline-%E2%80%94-Architecture-Document)
+
+---
+
+**APPLICATION**
+```md
+Browser (folder upload)
+     |
+     | 1) POST /api/uploader/... (create project/batch/doc, getSignedUrl)
+     v
++------------------------------+
+| Ingress (nginx)              |
+| host: www.swe-challenge.dev  |
+|  /api/uploader -> uploader   |
+|  /            -> ui          |
++---------------+--------------+
+                |
+                v
+        +---------------+
+        | Uploader API  |
+        | - MongoDB     |
+        | - getSignedUrl|
+        +-------+-------+
+                |
+                | 2) client PUT file to signed URL
+                v
+           +----------+
+           |   GCS    |
+           +----------+
+```
+
+**EVENTS**
+```md
+(async events + cron, NOT behind ingress)
+
++--------------------+          +--------------------------+
+| Uploader Service   |          | Scheduler Service        |
+| - API (ingress)    |          | - cron "documentProcess" |
+| - writes uploader  |          | - reads scheduler Mongo  |
+|   MongoDB          |          | - calls GCS metadata     |
+| - publishes events |          | - publishes events       |
++---------+----------+          +------------+-------------+
+|                                  |
+| consume +publish                 | consume + publish
+v                                  v
++----------------------------------------------+
+|              NATS JetStream                  |
+|              Stream: EVENTS                  |
++------------------+---------------------------+
+       |
+       | consume
+       v
++------------------+
+| Notifier Service |
+| - writes notifier|
+|   MongoDB        |
++------------------+
+```
