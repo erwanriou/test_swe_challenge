@@ -67,3 +67,52 @@ sudo install minikube-linux-amd64 /usr/local/bin/minikube
 ## Architecture
 
 [ARCHITECTURE DOCUMENT](https://github.com/erwanriou/test_swe_challenge/wiki/Document-Processing-Pipeline-%E2%80%94-Architecture-Document)
+
+
+```md
++-------------------+        +---------------------+
+|   Client (UI)     |        |  Kubernetes Ingress |
++---------+---------+        +----------+----------+
+          |                              |
+          | HTTP                         | routes
+          v                              v
+     +----+----------------+    +--------+----------------+
+     |   Uploader Service  |    |  Scheduler Service      |
+     |  - Projects/Batches |    |  - Cron processing      |
+     |  - Documents        |    |  - Dedup via GCS hash   |
+     |  - Signed URLs      |    |  - Updates statuses     |
+     +----+--------+-------+    +-----------+-------------+
+          |        |                        |
+          |        |                        |
+          |        |                        |
+          v        v                        v
+ +--------+--+  +--+----------------+   +---+------------+
+ | MongoDB   |  | Google Cloud      |   | MongoDB        |
+ | uploader  |  | Storage (GCS)     |   | scheduler      |
+ +-----------+  | - objects         |   +----------------+
+                | - metadata hash   |
+                +---------+---------+
+                          ^
+                          | direct upload (PUT)
+                          |
+                    +-----+------+
+                    |   Client   |
+                    +------------+
+
+                     (Event-driven async)
+                  +--------------------------------+
+                  |        NATS JetStream          |
+                  |        Stream: EVENTS          |
+                  +--------+---------------+-------+
+                           |               |
+                           v               v
+                 +---------+----+   +------+---------+
+                 | Scheduler    |   | Notifier       |
+                 | Consumers    |   | Consumers      |
+                 +--------------+   +------+---------+
+                                           |
+                                           v
+                                     +-----+------+
+                                     | MongoDB    |
+                                     | notifier   |
+                                     +------------+
